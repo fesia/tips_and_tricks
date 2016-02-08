@@ -44,7 +44,7 @@ config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=755", "fmode=
 
 # Rename VM
 config.vm.provider :virtualbox do |vb|
-  vb.name = "centos_6_x64_min"
+  vb.name = "awesome_name_for_your_vm"
 end
 
 # Configure your own ssh-key

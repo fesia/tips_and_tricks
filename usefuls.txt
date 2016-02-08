@@ -1,0 +1,54 @@
+# -----------------------------------------------------------------------------
+## LINUX ENVIRONMENT
+
+# Clean up disk space
+dd if=/dev/zero of=/EMPTY bs=1M; rm -f /EMPTY
+
+# Clean up user's history
+cat /dev/null > ~/.bash_history && history -c && exit
+
+# Generate a password
+< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-12};echo;
+
+# Walk through directories recursively and correct permissions
+find ./ -type d -exec chmod 0755 {} \;
+
+# The same with files
+find ./ -type f -exec chmod 0644 {} \;
+
+# Walk through directories recursively and correct owner/group
+find /path/to/directory -type f -user root -exec chown username:groupname {} \;
+
+# Clean up RAM cache
+sync; echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+# Find *.txt-files in 'directory' folder (also in subfolders) with 'pattern' inside
+find /path/to/directory -type f -name "*.txt" -exec grep -H "pattern" {} \;
+
+# Get domains from /var/named
+find /var/named/ -type f -print | awk -F.db {'print $1'} | awk -F/ {'print $4'}
+
+# Generate user:password pair for http-auth
+printf "user_name:$(openssl passwd -1 secret_password)\n" >> /path/to/.htpasswd		# 'MD5' encryption
+printf "user_name:$(openssl passwd -apr1 secret_password)\n" >> /path/to/.htpasswd	# 'apr1' ('Apache MD5') encryption
+printf "user_name:$(openssl passwd -crypt secret_password)\n" >> /path/to/.htpasswd	# 'crypt' encryption
+
+# Split large file to several smaller
+split -a 2 -d -b 2G sample_file.extension sample_file.extensio.part
+
+# -----------------------------------------------------------------------------
+## VAGRANT
+
+# Make vroot permissioned normally
+config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=755", "fmode=644"]
+
+# Rename VM
+config.vm.provider :virtualbox do |vb|
+  vb.name = "centos_6_x64_min"
+end
+
+# Configure your own ssh-key
+config.ssh.private_key_path = "id_rsa"
+config.ssh.insert_key = false
+
+# -----------------------------------------------------------------------------

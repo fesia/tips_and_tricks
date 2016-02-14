@@ -36,6 +36,10 @@ printf "user_name:$(openssl passwd -crypt secret_password)\n" >> /path/to/.htpas
 # Split large file to several smaller
 split -a 2 -d -b 2G sample_file.extension sample_file.extensio.part
 
+# Get enough entropy for some programs (CentOS 7)
+yum install -y haveged
+systemctl start haveged.service # leave it for some minutes
+
 # -----------------------------------------------------------------------------
 ## VAGRANT
 

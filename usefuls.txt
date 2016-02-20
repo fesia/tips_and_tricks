@@ -45,6 +45,10 @@ echo "BOOT_IMAGE=/boot/vmlinuz-3.10.0-327.10.1.el7.x86_64 root=UUID=f1e1cb98-fee
 mount -n --bind -o ro /root/cmdline /proc/cmdline
 cat /proc/cmdline # Check content for new parameters
 
+# Do it if logger doesn't work
+rm -f /var/lib/rsyslog/imjournal.state
+systemctl restart rsyslog.service
+
 # -----------------------------------------------------------------------------
 ## VAGRANT
 

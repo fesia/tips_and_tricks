@@ -40,6 +40,9 @@ split -a 2 -d -b 2G sample_file.extension sample_file.extensio.part
 yum install -y haveged
 systemctl start haveged.service # leave it for some minutes
 
+# Get external IP from bash
+curl -s http://whatismijnip.nl | cut -d " " -f 5
+
 # Editing write-protected system files (in case of '/proc/cmdline')
 echo "BOOT_IMAGE=/boot/vmlinuz-3.10.0-327.10.1.el7.x86_64 root=UUID=f1e1cb98-feeb-4d61-9114-a66373ae6ed5 ro crashkernel=128M rhgb quiet LANG=en_US.UTF-8" > /root/cmdline # echo-string may contain any options you need
 mount -n --bind -o ro /root/cmdline /proc/cmdline

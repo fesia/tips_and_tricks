@@ -52,6 +52,9 @@ cat /proc/cmdline # Check content for new parameters
 rm -f /var/lib/rsyslog/imjournal.state
 systemctl restart rsyslog.service
 
+# Generate self-signed certificate
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/ssl/my.key -out ~/ssl/my.crt
+
 # -----------------------------------------------------------------------------
 ## VAGRANT
 
